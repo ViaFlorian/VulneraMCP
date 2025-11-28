@@ -4,9 +4,21 @@ import { registerReconTools } from './tools/recon';
 import { registerJsTools } from './tools/js';
 import { registerSecurityTools } from './tools/security';
 import { registerCSRFTools } from './tools/csrf';
-import { registerBurpTools } from './tools/burp';
+// Burp and Caido integrations are optional (excluded from public repo)
+let registerBurpTools: any = null;
+let registerCaidoTools: any = null;
+try {
+  registerBurpTools = require('./tools/burp').registerBurpTools;
+} catch (e) {
+  // Burp integration not available
+}
+try {
+  registerCaidoTools = require('./tools/caido').registerCaidoTools;
+} catch (e) {
+  // Caido integration not available
+}
+
 import { registerRenderTools, closeBrowser } from './tools/render';
-import { registerCaidoTools } from './tools/caido';
 import { registerDatabaseTools } from './tools/database';
 import { registerTrainingTools } from './tools/training';
 import { registerTrainingExtractorTools } from './tools/training_extractor';
@@ -24,9 +36,13 @@ registerReconTools(server);
 registerJsTools(server);
 registerSecurityTools(server);
 registerCSRFTools(server);
-registerBurpTools(server);
+if (registerBurpTools) {
+  registerBurpTools(server);
+}
 registerRenderTools(server);
-registerCaidoTools(server);
+if (registerCaidoTools) {
+  registerCaidoTools(server);
+}
 registerDatabaseTools(server);
 registerTrainingTools(server);
 registerTrainingExtractorTools(server);
@@ -66,8 +82,12 @@ server.on('start', () => {
   console.error('  - recon.* : Reconnaissance tools (subfinder, httpx, amass, dns)');
   console.error('  - js.* : JavaScript analysis (download, beautify, endpoints, secrets)');
   console.error('  - security.* : Security testing (XSS, SQLi, IDOR, CSP, auth bypass)');
-  console.error('  - burp.* : Burp Suite integration (search, send_raw, get_traffic)');
-  console.error('  - caido.* : Caido integration (query, search, analyze_auth)');
+  if (registerBurpTools) {
+    console.error('  - burp.* : Burp Suite integration (search, send_raw, get_traffic)');
+  }
+  if (registerCaidoTools) {
+    console.error('  - caido.* : Caido integration (query, search, analyze_auth)');
+  }
   console.error('  - render.* : Rendering tools (screenshot, extract_dom, extract_forms)');
   console.error('  - db.* : Database operations (save_finding, get_findings, init)');
   console.error('  - training.* : Training data (import, match, stats, extract_from_writeup)');
