@@ -1,0 +1,60 @@
+{
+  "program": "Social Deal",
+  "platform": "Intigriti",
+  "domain": "www.socialdeal.nl",
+  "rateLimit": {
+    "maxRequestsPerSecond": 2,
+    "delayBetweenRequests": 500
+  },
+  "testCredentials": {
+    "account1": {
+      "username": "intigriti-1@socialdeal.nl",
+      "password": "rR7R281kz%!F"
+    },
+    "account2": {
+      "username": "intigriti-2@socialdeal.nl",
+      "password": "r92x%4bRbMys"
+    }
+  },
+  "inScope": {
+    "domains": [
+      "www.socialdeal.nl",
+      "socialdeal.nl"
+    ],
+    "urls": [
+      "http://socialdeal.nl/inspirations/bluemonday/",
+      "http://www.whynot.com/",
+      "https://www.socialdeal.nl/orderlist/5e834ae0bed5/63d772e2ed277/"
+    ],
+    "apps": {
+      "ios": "app.nl.socialdeal",
+      "android": "app.nl.socialdeal"
+    }
+  },
+  "techStack": {
+    "servers": "AWS EC2 with Linux",
+    "backend": "PHP 7.4/8.1",
+    "database": "MariaDB (latest)",
+    "frontend": "NuxtJS (Tier 2/3)"
+  },
+  "worseCaseScenarios": [
+    "Full access to servers and database",
+    "Useful infrastructure information disclosure"
+  ],
+  "knownIssues": [
+    "Iframe possible (click jacking)",
+    "API key disclosure without proven business impact",
+    "Wordpress usernames disclosure"
+  ],
+  "outOfScope": [
+    "API key disclosure without proven business impact",
+    "Wordpress usernames disclosure",
+    "Self-XSS that cannot be used to exploit other users",
+    "CORS misconfiguration on non-sensitive endpoints",
+    "Missing cookie flags",
+    "Missing security headers",
+    "CSRF with no or low impact"
+  ]
+}
+
+

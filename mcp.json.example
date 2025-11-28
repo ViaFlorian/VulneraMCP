@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "bugbounty-mcp": {
+      "command": "/usr/local/bin/node",
+      "args": [
+        "/Users/telmonmaluleka/bugbounty-mcp-server/dist/index.js"
+      ],
+      "env": {
+        "POSTGRES_HOST": "localhost",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DB": "bugbounty",
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_PASSWORD": "",
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": "6379",
+        "BURP_BRIDGE_PORT": "9131",
+        "CAIDO_MCP_SERVER": "api.caido.io",
+        "CAIDO_API_TOKEN": "YOUR_CAIDO_PAT_TOKEN_HERE"
+      }
+    }
+  }
+}
+

@@ -1,0 +1,68 @@
+{
+  "csrf_examples": [
+    {
+      "source": "intigriti",
+      "sourceId": "csrf-get-pii-leak",
+      "vulnerabilityType": "CSRF",
+      "targetPattern": "/?corelationID=&email=&accept=",
+      "payloadPattern": "accept=true",
+      "successPattern": "accepted|added|success",
+      "failurePattern": "error|invalid",
+      "contextData": {
+        "technique": "GET-based CSRF",
+        "description": "GET request CSRF leading to PII leak",
+        "example": "https://target.com/?corelationID=xxx&email=victim@mail.com&accept=true",
+        "impact": "One-click customer data leak - full name, email, country"
+      },
+      "score": 9
+    }
+  ],
+  "portswigger_techniques_2023": [
+    {
+      "source": "portswigger",
+      "sourceId": "technique-2023-1",
+      "vulnerabilityType": "Various",
+      "targetPattern": "/api/",
+      "payloadPattern": "varies",
+      "successPattern": "exploited|vulnerable",
+      "failurePattern": "protected|secure",
+      "contextData": {
+        "year": 2023,
+        "description": "Top 10 web hacking techniques of 2023"
+      },
+      "score": 8
+    }
+  ],
+  "google_dorking": [
+    {
+      "source": "medium",
+      "sourceId": "dork-custom",
+      "vulnerabilityType": "Information Disclosure",
+      "targetPattern": "site:target.com",
+      "payloadPattern": "filetype:pdf site:|inurl:admin site:|intitle:\"index of\" site:",
+      "successPattern": "results|files|pages found",
+      "failurePattern": "no results",
+      "contextData": {
+        "technique": "Custom Google Dorks",
+        "description": "Craft custom dorks for bug hunting",
+        "examples": [
+          "site:target.com filetype:pdf",
+          "site:target.com inurl:admin",
+          "site:target.com intitle:\"index of\"",
+          "site:target.com \"powered by\"",
+          "site:target.com intext:\"error\""
+        ]
+      },
+      "score": 6
+    }
+  ]
+}
+
+
+
+
+
+
+
+
+

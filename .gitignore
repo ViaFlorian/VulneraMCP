@@ -1,0 +1,66 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+*.tsbuildinfo
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.crt
+secrets/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Test results
+coverage/
+.nyc_output/
+test-results/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Hunting directory data files (but keep configs)
+hunting/*.log
+hunting/results/
+hunting/screenshots/
+hunting/captures/
+hunting/data/
+
+# Keep hunting config files
+!hunting/socialdeal-config.json
+!hunting/*.js
+!hunting/README.md
+!hunting/start-hunt.sh
+
+# Archive and test files (optional - uncomment if you don't want these)
+# archive/
+# test-*.js
+# test-*.sh
+
+# OS files
+Thumbs.db
+.DS_Store
