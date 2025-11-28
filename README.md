@@ -31,19 +31,6 @@ VulneraMCP integrates with industry-standard security tools (OWASP ZAP, Caido, B
 - **Secret Detection**: Heuristic API key and token extraction
 - **Full Analysis**: Combined download, beautify, and analyze workflow
 
-### 🎯 Burp Suite Integration
-- **Traffic Capture**: Receive and store Burp traffic
-- **Traffic Search**: Search captured traffic with regex
-- **Raw Request Sending**: Send requests through Burp bridge
-- **Bridge Server**: HTTP server to receive Burp extension traffic
-
-### 📊 Caido Integration
-- **HTTPQL Queries**: Query Caido traffic with HTTPQL syntax
-- **Traffic Search**: Search Caido traffic for patterns
-- **Endpoint Discovery**: Intelligent endpoint discovery agents
-- **Auth Flow Analysis**: Analyze authentication-related requests
-- **Security Scanning**: Automated security-focused scanning agents
-
 ### 🕷️ OWASP ZAP Integration
 - **Spider Scans**: Automated web crawling
 - **Active Scanning**: Vulnerability scanning
