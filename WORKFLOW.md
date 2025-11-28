@@ -6,6 +6,54 @@ VulneraMCP is an AI-powered bug bounty hunting platform that operates as a Model
 
 ## Architecture Flow
 
+### Visual Architecture Diagram
+
+```mermaid
+graph TB
+    Client[MCP Client<br/>Cursor/Claude Desktop]
+    Server[MCP Server<br/>src/index.ts]
+    Tools[Tool Handlers<br/>src/tools/*.ts]
+    
+    Recon[Recon Tools<br/>recon.*]
+    Security[Security Tools<br/>security.*]
+    JS[JS Analysis<br/>js.*]
+    ZAP[ZAP Integration<br/>zap.*]
+    DB[Database Tools<br/>db.*]
+    Render[Render Tools<br/>render.*]
+    
+    ExtTools[External Tools<br/>subfinder, httpx, amass]
+    ZAPTool[OWASP ZAP<br/>Scanner]
+    Browser[Puppeteer<br/>Browser]
+    
+    Postgres[(PostgreSQL<br/>Findings & Results)]
+    Redis[(Redis<br/>Cache & Memory)]
+    Dashboard[Dashboard Server<br/>Express API]
+    
+    Client -->|JSON-RPC 2.0| Server
+    Server --> Tools
+    Tools --> Recon
+    Tools --> Security
+    Tools --> JS
+    Tools --> ZAP
+    Tools --> DB
+    Tools --> Render
+    
+    Recon --> ExtTools
+    Security --> ExtTools
+    ZAP --> ZAPTool
+    Render --> Browser
+    
+    DB --> Postgres
+    Recon --> Redis
+    Security --> Postgres
+    ZAP --> Postgres
+    
+    Dashboard --> Postgres
+    Dashboard -->|Web UI| BrowserUI[Web Browser]
+```
+
+### System Components
+
 ```
 ┌─────────────────┐
 │  MCP Client     │  (Cursor, Claude Desktop, etc.)
@@ -75,7 +123,33 @@ VulneraMCP is an AI-powered bug bounty hunting platform that operates as a Model
 
 **File:** `src/mcp/server.ts`
 
-**Process:**
+**Process Flow Diagram:**
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server as MCP Server
+    participant Tool as Tool Handler
+    participant Ext as External Tool/DB
+    
+    Client->>Server: JSON-RPC Request
+    Note over Client,Server: {"method": "tools/call",<br/>"params": {"name": "recon.subfinder",<br/>"arguments": {...}}}
+    
+    Server->>Server: Lookup tool by name
+    Server->>Tool: Execute handler
+    
+    Tool->>Ext: Run command/query
+    Ext-->>Tool: Return result
+    
+    Tool->>Tool: Format result
+    Tool-->>Server: Return ToolResult
+    
+    Server->>Server: Format JSON-RPC response
+    Server-->>Client: JSON-RPC Response
+    Note over Server,Client: {"result": {"content": [...]}}
+```
+
+**Text Flow:**
 
 ```
 Client Request
@@ -118,7 +192,22 @@ JSON-RPC Response
 
 **Tools:** `recon.subfinder`, `recon.httpx`, `recon.amass`, `recon.dns`, `recon.full`
 
-**Flow:**
+**Flow Diagram:**
+
+```mermaid
+flowchart LR
+    Start[recon.full] --> Subfinder[subfinder]
+    Subfinder --> Parse[Parse Subdomains]
+    Parse --> Redis[(Save to Redis)]
+    Parse --> Httpx[httpx Check]
+    Httpx --> Live[Filter Live Hosts]
+    Live --> Amass[amass Enum]
+    Amass --> Aggregate[Aggregate Results]
+    Aggregate --> DB[(Save to PostgreSQL)]
+    DB --> End[Return Results]
+```
+
+**Detailed Flow:**
 ```
 1. recon.subfinder
    └─► Execute subfinder command
@@ -329,6 +418,50 @@ Express Server (Port 3000)
 ### 5. Complete Bug Bounty Workflow Example
 
 **Typical Workflow:**
+
+```mermaid
+sequenceDiagram
+    participant Client as MCP Client
+    participant Server as MCP Server
+    participant Recon as Recon Tools
+    participant JS as JS Analysis
+    participant Security as Security Tools
+    participant ZAP as ZAP Integration
+    participant DB as Database
+    participant Dashboard as Dashboard
+    
+    Client->>Server: recon.full(domain)
+    Server->>Recon: Execute subfinder
+    Recon->>Recon: Execute httpx
+    Recon->>DB: Save test results
+    Server-->>Client: Return subdomains
+    
+    Client->>Server: js.analyze(url)
+    Server->>JS: Download & analyze
+    JS-->>Client: Return endpoints & secrets
+    
+    Client->>Server: security.test_xss(url)
+    Server->>Security: Test XSS payloads
+    Security->>DB: Save finding (if vulnerable)
+    Server-->>Client: Return test results
+    
+    Client->>Server: zap.start_spider(url)
+    Server->>ZAP: Start spider scan
+    ZAP-->>Server: Return discovered URLs
+    
+    Client->>Server: zap.get_alerts()
+    Server->>ZAP: Query alerts
+    ZAP-->>Server: Return vulnerabilities
+    Server->>DB: Save findings
+    Server-->>Client: Return alerts
+    
+    Client->>Dashboard: View findings
+    Dashboard->>DB: Query findings
+    DB-->>Dashboard: Return data
+    Dashboard-->>Client: Display results
+```
+
+**Step-by-Step Flow:**
 
 ```
 1. RECONNAISSANCE
