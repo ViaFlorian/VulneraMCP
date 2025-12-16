@@ -1,32 +1,33 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  bugbounty-mcp:
-    build: .
-    container_name: bugbounty-mcp-server
-    ports:
-      - "9131:9131"
-    environment:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
-      - POSTGRES_DB=bugbounty
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-bugbounty123}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - BURP_BRIDGE_PORT=9131
-      - CAIDO_MCP_SERVER=${CAIDO_MCP_SERVER:-}
-    volumes:
-      - ./screenshots:/app/screenshots
-      - ./logs:/app/logs
-    depends_on:
-      - postgres
-      - redis
-    restart: unless-stopped
+  # bugbounty-mcp:
+  #   build: .
+  #   container_name: bugbounty-mcp-server
+  #   ports:
+  #     - "9131:9131"
+  #   environment:
+  #     - POSTGRES_HOST=postgres
+  #     - POSTGRES_PORT=5432
+  #     - POSTGRES_DB=bugbounty
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-bugbounty123}
+  #     - REDIS_HOST=redis
+  #     - REDIS_PORT=6379
+  #     - BURP_BRIDGE_PORT=9131
+  #     - CAIDO_MCP_SERVER=${CAIDO_MCP_SERVER:-}
+  #   volumes:
+  #     - ./screenshots:/app/screenshots
+  #     - ./logs:/app/logs
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   restart: unless-stopped
+  #   networks:
+  #     - big_network
 
   postgres:
     image: postgres:15-alpine
-    container_name: bugbounty-postgres
     environment:
       - POSTGRES_DB=bugbounty
       - POSTGRES_USER=postgres
@@ -35,18 +36,24 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+      - "5433:5432"
     restart: unless-stopped
+    networks:
+      - big_network
 
   redis:
     image: redis:7-alpine
-    container_name: bugbounty-redis
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
     restart: unless-stopped
+    networks:
+      - big_network
 
 volumes:
   postgres_data:
   redis_data:
 
+networks:
+  big_network:

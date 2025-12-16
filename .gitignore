@@ -25,9 +25,9 @@ mcp.json
 .cursor/mcp.json
 
 # Scripts with hardcoded passwords (keep example versions)
-dashboard-server.js
-start-services.sh
-run-dashboard.sh
+# dashboard-server.js
+# start-services.sh
+# run-dashboard.sh
 
 # Burp Suite integration (proprietary tool)
 src/tools/burp.ts

@@ -1,0 +1,3 @@
+- docker compose up
+- sudo docker run --rm -p 8081:8081 -p 8090:8090 zaproxy/zap-stable zap.sh -daemon -host 0.0.0.0 -port 8081 -config api.disablekey=true -loglevel debug -config api.addrs.addr.name=.\* -config api.addrs.addr.regex=true
+- POSTGRES_PASSWORD=bugbounty123 npm run dashboard
